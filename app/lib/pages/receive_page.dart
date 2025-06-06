@@ -8,6 +8,7 @@ import 'package:localsend_app/gen/strings.g.dart';
 import 'package:localsend_app/model/persistence/color_mode.dart';
 import 'package:localsend_app/pages/receive_options_page.dart';
 import 'package:localsend_app/pages/receive_page_controller.dart';
+import 'package:localsend_app/provider/device_info_provider.dart';
 import 'package:localsend_app/provider/favorites_provider.dart';
 import 'package:localsend_app/provider/selection/selected_receiving_files_provider.dart';
 import 'package:localsend_app/provider/settings_provider.dart';
@@ -53,6 +54,7 @@ class _ReceivePageState extends State<ReceivePage> with Refena {
     }
 
     final senderFavoriteEntry = ref.watch(favoritesProvider.select((state) => state.findDevice(vm.sender)));
+    final myDevice = ref.watch(deviceFullInfoProvider);
 
     return PopScope(
       onPopInvokedWithResult: (didPop, result) {
@@ -113,9 +115,22 @@ class _ReceivePageState extends State<ReceivePage> with Refena {
                                         label: vm.sender.deviceModel!,
                                       ),
                                     ],
+                                    const SizedBox(width: 10),
+                                    DeviceBadge(
+                                      backgroundColor: Theme.of(context).colorScheme.onSecondaryContainer,
+                                      foregroundColor: Theme.of(context).colorScheme.onInverseSurface,
+                                      label: vm.sender.https ? 'Secure' : 'Insecure',
+                                    ),
                                   ],
                                 ),
                               ],
+                              const SizedBox(height: 16),
+                              Text('Compare the emojis:'),
+                              const SizedBox(height: 4),
+                              Text(
+                                vm.sender.emojiFingerprint(myDevice),
+                                style: TextStyle(fontSize: 20, fontFamily: 'EmojiOne'),
+                              ),
                               const SizedBox(height: 40),
                               Text(
                                 vm.message != null

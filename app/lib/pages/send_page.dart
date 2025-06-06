@@ -131,7 +131,18 @@ class _SendPageState extends State<SendPage> with Refena {
                             switch (sendState.status) {
                               SessionStatus.waiting => Padding(
                                   padding: const EdgeInsets.only(bottom: 20),
-                                  child: Text(t.sendPage.waiting, textAlign: TextAlign.center),
+                                  child: Column(
+                                    children: [
+                                      const SizedBox(height: 16),
+                                      Text('Compare the emojis:'),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        myDevice.emojiFingerprint(targetDevice),
+                                        style: TextStyle(fontSize: 20, fontFamily: 'EmojiOne'),
+                                      ),
+                                      Text(t.sendPage.waiting, textAlign: TextAlign.center)
+                                    ]
+                                  ),
                                 ),
                               SessionStatus.declined => Padding(
                                   padding: const EdgeInsets.only(bottom: 20),
